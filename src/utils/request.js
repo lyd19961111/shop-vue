@@ -8,6 +8,9 @@ const request = axios.create({
 // Add a request interceptor
 request.interceptors.request.use(function (config) {
     // Do something before request is sent
+    console.log('request',config);
+    //通过axios请求拦截器添加token，保证拥有获取数据的权限
+    config.headers.Authorization=window.sessionStorage.getItem('token');
     return config;
   }, function (error) {
     // Do something with request error
