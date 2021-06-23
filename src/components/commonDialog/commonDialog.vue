@@ -1,18 +1,19 @@
 <template>
   <el-dialog title="添加用户" :visible="visible" @close="handleClose" >
+    <slot></slot>
       <!-- 内容主题区域 -->
-  <el-form :model="value" :rules="addFormRules" ref="addFormRef" label-width="70px">
-    <el-form-item  v-for="item in addFormLabel" :key="item.prop"  :label="item.name"  :prop="item.prop" :label-width="formLabelWidth">
+  <el-form :model="value" :rules="FormRules" ref="FormRef" label-width="70px">
+    <el-form-item  v-for="item in FormLabel" :key="item.prop"  :label="item.name"  :prop="item.prop" :label-width="formLabelWidth">
     <el-input :value="value[item.prop]" @input="handleInput($event,item.prop)" />
 <!--      :disabled="item.name==='用户名'?disabled:!disabled"-->
       <!-- <el-input  v-model="addForm.value"></el-input> -->
     </el-form-item>
   </el-form>
   <!-- 底部区域 -->
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="handleClose">取 消</el-button>
-    <el-button type="primary" @click="handleAdd">确 定</el-button>
-  </div>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="handleClose">取 消</el-button>
+      <el-button type="primary" @click="handleAdd">确 定</el-button>
+    </div>
 </el-dialog>
 </template>
 
@@ -29,8 +30,8 @@ export default {
       default: () => ({})
     },
     // addForm:Object,
-    addFormRules: Object,
-    addFormLabel: Array
+    FormRules: Object,
+    FormLabel: Array
   },
   data () {
     return {
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     handleAdd () {
-      this.$refs.addFormRef.validate(valid => {
+      this.$refs.FormRef.validate(valid => {
         if (!valid) {
           this.$message({
             type: 'warning',
@@ -57,7 +58,7 @@ export default {
       this.$emit('input', { ...value, ...tempObj })
     },
     handleClose () {
-      this.$refs.addFormRef.resetFields()
+      this.$refs.FormRef.resetFields()
       this.$emit('update:visible', false)
     }
   }

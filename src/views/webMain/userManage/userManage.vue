@@ -14,15 +14,72 @@
         </el-col>
       </el-row>
       <!-- 表格区域 -->
-     <common-table :total="total" :pag="queryInfo" @changeCurrent="changeCurrent" @changePage="changePage" :tableData="userlist" :tableLabel="tableLabel" @changeState="changeState" @openEdit="openEdit"  @delUser="delUser"></common-table>
+     <common-table :total="total" :pag="queryInfo" @changeCurrent="changeCurrent" @changePage="changePage" :tableData="userlist" :tableLabel="tableLabel" @changeState="changeState" @openEdit="openEdit"  @delUser="delUser">
+       <el-table-column slot="a" label="状态">
+         <template slot-scope="scope">
+           <el-switch v-model="scope.row.mg_state" @change="changeState (scope.row)"> </el-switch>
+         </template>
+       </el-table-column>
+       <el-table-column slot="b" label="操作" width="180px">
+         <template slot-scope="scope">
+           <el-button
+             type="primary"
+             icon="el-icon-edit"
+             size="mini"
+             @click="openEdit(scope.row.id)"
+           ></el-button>
+           <el-button
+             type="danger"
+             icon="el-icon-delete"
+             size="mini"
+             @click="delUser(scope.row.id)"
+           ></el-button>
+           <el-tooltip
+             class="item"
+             effect="dark"
+             content="分配角色"
+             placement="top"
+             :enterable="false"
+           >
+             <el-button
+               type="warning"
+               icon="el-icon-setting"
+               size="mini"
+               @click="assignRole(scope.row)"
+             ></el-button>
+           </el-tooltip>
+         </template>
+       </el-table-column>
+     </common-table>
     </el-card>
 
     <!-- 添加用户区域 -->
-    <common-dialog  v-model="addForm" :addFormLabel="addFormLabel" :addFormRules="addFormRules" :visible.sync="addDialogVisible" @handleAdd="addUser">
+    <common-dialog  v-model="addForm" :FormLabel="addFormLabel" :FormRules="addFormRules" :visible.sync="addDialogVisible" @handleAdd="addUser">
     </common-dialog>
 <!--   编辑用户区域-->
-    <common-dialog  v-model="editForm" :addFormLabel="editLabel" :addFormRules="editFormRules" :visible.sync="editDialogVisible"  @handleAdd="updateUser" :disabled="true">
+    <common-dialog  v-model="editForm" :FormLabel="editLabel" :FormRules="editFormRules" :visible.sync="editDialogVisible"  @handleAdd="updateUser" :disabled="true">
     </common-dialog>
+<!--    分配角色区域-->
+    <el-dialog title="角色分配" :visible.sync="roleFormVisible"
+    width="50%" @close="roleDialogClose">
+      <div>
+        <p>当前用户:{{userInfo.username}}</p>
+        <p>当前角色：{{userInfo.role_name}}</p>
+      </div>
+      <p>分配新角色：
+        <el-select v-model="selectRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in rolelist"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id">
+          </el-option>
+        </el-select></p>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="roleDialogClose">取 消</el-button>
+        <el-button type="primary" @click="saveRoleInfo">确定</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -131,7 +188,7 @@ export default {
         ],
         password: [
           { required: true, message: '密码', trigger: 'blur' },
-          { min: 6, max: 10, message: '长度在 6 到 5 个字符', trigger: 'blur' }
+          { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
         ],
         email: [
           { required: true, message: '邮箱', trigger: 'blur' },
@@ -175,7 +232,16 @@ export default {
         ]
       },
       editDialogVisible: false, // 编辑用户的显示与隐藏
-      disabled: true // 禁用input
+      disabled: true, // 禁用input
+      roleFormVisible: false, // 角色分配弹出框
+      roleForm: {
+        region: ''
+      }, // 角色分配
+      // 需要被分配的角色等级
+      userInfo: {},
+      rolelist: [], // 所有角色数据列表
+      selectRoleId: ''// 分配角色选中的id
+
     }
   },
   created () {
@@ -326,6 +392,62 @@ export default {
         })
       })
       console.log('11111', id)
+    },
+    assignRole (userInfo) {
+      this.roleFormVisible = !this.roleFormVisible
+      this.userInfo = userInfo
+      // 展示对话框之前，获取所有角色列表
+      userApi.getAssign().then(response => {
+        const resp = response.data
+        console.log('授权角色', resp)
+        if (resp.meta.status !== 200) {
+          this.$message({
+            type: 'error',
+            message: '接口调用失败'
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            message: '获取列表成功'
+          })
+          this.rolelist = resp.data
+        }
+      })
+    },
+    // 点击确定按钮，分配角色 保存角色权限
+    saveRoleInfo () {
+      if (!this.selectRoleId) {
+        this.$message({
+          type: 'warning',
+          message: '请选择角色'
+        })
+      } else {
+        userApi.giveAssign(this.userInfo.id, this.selectRoleId).then(response => {
+          const resp = response.data
+          console.log('角色分配成功', resp)
+          if (resp.meta.status !== 200) {
+            this.$message({
+              type: 'error',
+              message: '接口调用失败'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '更新角色成功'
+            })
+            this.roleFormVisible = false
+            this.getUserList()
+          }
+        }
+
+        )
+      }
+    },
+    // 监听权限分配的对话框关闭事件
+    roleDialogClose () {
+      this.selectRoleId = ''
+      this.userInfo = {}
+      this.roleFormVisible = false
     }
   }
 }

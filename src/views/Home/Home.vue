@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <el-container class="home_container">
       <!-- 头部 -->
     <el-header>
@@ -20,21 +20,21 @@
 </template>
 
 <script>
-import webHeader from '../webHeader/webHeader.vue';
-import WebNav from '../webNav/webNav.vue';
+import webHeader from '../webHeader/webHeader.vue'
+import WebNav from '../webNav/webNav.vue'
 export default {
   components: { webHeader, WebNav },
-  data(){
-      return{
-           isCollapse:false,
-      }
-  },
-  methods: {
-    toggleCollapse(){
-        this.isCollapse=!this.isCollapse
+  data () {
+    return {
+      isCollapse: false
     }
   },
-};
+  methods: {
+    toggleCollapse () {
+      this.isCollapse = !this.isCollapse
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

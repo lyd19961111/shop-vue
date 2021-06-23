@@ -53,5 +53,23 @@ export default ({
       url: `/users/${id}`,
       method: 'delete'
     })
+  },
+  // 获取角色权限列表
+  getAssign () {
+    return request({
+      url: '/roles',
+      method: 'get'
+    })
+  },
+
+  // 分配角色权限
+  giveAssign (id, selectId) {
+    return request({
+      url: `/users/${id}/role`,
+      method: 'put',
+      data: {
+        rid: selectId
+      }
+    })
   }
 })

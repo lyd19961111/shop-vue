@@ -8,7 +8,7 @@
 
 <script>
 export default {
- props:['crumbList']
+  props: ['crumbList']
 }
 </script>
 
