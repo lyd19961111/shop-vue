@@ -1,6 +1,5 @@
 <template>
 <div>
-  <bread-crumb :crumbList="crumbList"></bread-crumb>
   <el-card>
 <!--    添加分类-->
     <el-row>
@@ -65,12 +64,11 @@
 </template>
 
 <script>
-import breadCrumb from '../../../components/breadCrumb/breadCrumb.vue'
 import goodApi from '@/api/good.js'
 import CommonDialog from '../../../components/commonDialog/commonDialog'
 export default {
   name: 'goodSort.vue',
-  components: { CommonDialog, breadCrumb },
+  components: { CommonDialog },
   data () {
     return {
       // 面包屑

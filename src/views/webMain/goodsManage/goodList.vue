@@ -1,6 +1,5 @@
 <template>
 <div>
-  <bread-crumb :crumbList="crumblist"></bread-crumb>
   <el-card>
     <el-row :gutter="20">
       <el-col :span="8">
@@ -36,12 +35,11 @@
 <script>
 import { time } from '@/utils/time.js'
 import goodApi from '@/api/good.js'
-import BreadCrumb from '../../../components/breadCrumb/breadCrumb'
 import CommonTable from '../../../components/commonTable/commonTable'
 import CommonDialog from '../../../components/commonDialog/commonDialog'
 export default {
   name: 'goodList.vue',
-  components: { CommonDialog, CommonTable, BreadCrumb },
+  components: { CommonDialog, CommonTable },
   filters: {
     time (val) {
       return time(val)

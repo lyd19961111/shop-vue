@@ -1,6 +1,5 @@
 <template>
   <div>
-    <bread-crumb :crumbList="crumbList"></bread-crumb>
     <el-card>
         <!-- 搜索区域 -->
       <el-row :gutter="20">
@@ -53,7 +52,7 @@
      </common-table>
     </el-card>
 
-    <!-- 添加用户区域 -->
+    <!-- 添加用户区域  这里的v-model="addForm" 相当于:value="addForm" @input="input"-->
     <common-dialog  v-model="addForm" :FormLabel="addFormLabel" :FormRules="addFormRules" :visible.sync="addDialogVisible" @handleAdd="addUser">
     </common-dialog>
 <!--   编辑用户区域-->
@@ -86,11 +85,10 @@
 
 <script>
 import userApi from '@/api/user.js'
-import breadCrumb from '../../../components/breadCrumb/breadCrumb.vue'
 import commonTable from '../../../components/commonTable/commonTable.vue'
 import CommonDialog from '../../../components/commonDialog/commonDialog.vue'
 export default {
-  components: { breadCrumb, commonTable, CommonDialog },
+  components: { commonTable, CommonDialog },
   data () {
     // 验证邮箱的规则
     var checkEmail = (rule, value, callback) => {

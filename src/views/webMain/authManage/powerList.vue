@@ -1,6 +1,5 @@
 <template>
 <div>
-  <bread-crumb :crumbList="crumbList"></bread-crumb>
   <el-card>
   <common-table :tableData="powerlist" :total="total" :pag="queryInfo"  :tableLabel="tableLabel">
     <el-table-column slot="a" label="权限等级" prop="level">
@@ -17,11 +16,10 @@
 
 <script>
 import authApi from '@/api/auth.js'
-import breadCrumb from '../../../components/breadCrumb/breadCrumb.vue'
 import commonTable from '../../../components/commonTable/commonTable.vue'
 export default {
   name: 'powerList',
-  components: { breadCrumb, commonTable },
+  components: { commonTable },
   data () {
     return {
       crumbList: [

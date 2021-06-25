@@ -5,8 +5,6 @@
   <el-form :model="value" :rules="FormRules" ref="FormRef" label-width="70px">
     <el-form-item  v-for="item in FormLabel" :key="item.prop"  :label="item.name"  :prop="item.prop" :label-width="formLabelWidth">
     <el-input :value="value[item.prop]" @input="handleInput($event,item.prop)" />
-<!--      :disabled="item.name==='用户名'?disabled:!disabled"-->
-      <!-- <el-input  v-model="addForm.value"></el-input> -->
     </el-form-item>
   </el-form>
   <!-- 底部区域 -->
@@ -51,10 +49,13 @@ export default {
         }
       })
     },
+    // val代表input中输入的值
     handleInput (val, key) {
       const { value } = this
+      // 等同于 const value = this.value
       const tempObj = {}
       tempObj[key] = val
+      // 合并
       this.$emit('input', { ...value, ...tempObj })
     },
     handleClose () {

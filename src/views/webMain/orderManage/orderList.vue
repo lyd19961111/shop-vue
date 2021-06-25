@@ -1,7 +1,6 @@
 <template>
 <div>
 <!--  面包屑-->
-  <bread-crumb :crumbList="crumbList"></bread-crumb>
   <el-card>
   <el-row :gutter="20">
     <el-col :span="8">
@@ -35,12 +34,11 @@
 
 <script>
 import orderApi from '@/api/order.js'
-import BreadCrumb from '../../../components/breadCrumb/breadCrumb'
 import CommonTable from '../../../components/commonTable/commonTable'
 import CommonDialog from '../../../components/commonDialog/commonDialog'
 export default {
   name: 'orderList.vue',
-  components: { CommonDialog, CommonTable, BreadCrumb },
+  components: { CommonDialog, CommonTable },
   // 是否付款过滤
   filters: {
     payState (val) {

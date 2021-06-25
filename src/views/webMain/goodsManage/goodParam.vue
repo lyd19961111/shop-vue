@@ -1,6 +1,5 @@
 <template>
 <div>
-  <bread-crumb :crumbList="crumbList"></bread-crumb>
   <el-card>
     <el-alert
       title="注意：只允许为第三级分类设置相关参数！"
@@ -106,11 +105,10 @@
 
 <script>
 import goodApi from '@/api/good.js'
-import breadCrumb from '../../../components/breadCrumb/breadCrumb.vue'
 import CommonDialog from '../../../components/commonDialog/commonDialog'
 export default {
   name: 'goodParam.vue',
-  components: { CommonDialog, breadCrumb },
+  components: { CommonDialog },
   data () {
     return {
       // 面包屑

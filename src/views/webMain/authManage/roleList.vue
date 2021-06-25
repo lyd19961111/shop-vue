@@ -1,6 +1,5 @@
 <template>
 <div>
-  <bread-crumb :crumbList="crumbList"></bread-crumb>
   <el-card>
 <!--    添加角色-->
     <el-row>
@@ -74,12 +73,11 @@
 
 <script>
 import authApi from '@/api/auth.js'
-import breadCrumb from '../../../components/breadCrumb/breadCrumb.vue'
 import commonTable from '../../../components/commonTable/commonTable.vue'
 import ShowSetDialog from '../../../components/commonDialog/showSetDialog'
 import CommonDialog from '../../../components/commonDialog/commonDialog'
 export default {
-  components: { CommonDialog, ShowSetDialog, breadCrumb, commonTable },
+  components: { CommonDialog, ShowSetDialog, commonTable },
   name: 'roleList.vue',
   data () {
     return {
