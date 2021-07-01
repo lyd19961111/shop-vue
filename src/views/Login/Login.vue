@@ -3,7 +3,7 @@
     <div class="login_box">
       <!-- 头像区域 -->
       <div class="avator_box">
-        <img src="@/assets/logo.png" alt="" />
+        <img src="@/assets/logo.svg" alt="" />
       </div>
       <!-- 登陆区域 -->
       <el-form
@@ -36,7 +36,7 @@
           <el-button type="info" @click="resetLoginForm('loginFormRef')">重置</el-button>
         </el-form-item>
       </el-form>
-     
+
     </div>
   </div>
 </template>
@@ -44,68 +44,71 @@
 <script>
 import loginApi from '@/api/login.js'
 export default {
-  data() {
+  data () {
     return {
-      //登陆表单的数据绑定
+      // 登陆表单的数据绑定
       loginForm: {
-        username: "admin",
-        password: "123456",
+        username: 'admin',
+        password: '123456'
       },
-      //登陆表单校验
+      // 登陆表单校验
       loginFormRules: {
-          //用户名校验
+        // 用户名校验
         username: [
-          { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 3, max: 15, message: "账号长度在3到15个字符", trigger: "blur" },
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 3, max: 15, message: '账号长度在3到15个字符', trigger: 'blur' }
         ],
-        //密码校验
+        // 密码校验
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 15, message: "密码长度在6到15个字符", trigger: "blur" },
-        ],
-      },
-    };
-  },
-  methods:{  
-      //重置账号密码
-      resetLoginForm(formName){
-        this.$refs[formName].resetFields();
-      },
-      //账号登陆
-      login(forName){
-           //表单验证
-          this.$refs[forName].validate((valid)=>{
-              if(!valid){
-                  this.$message({
-                      type:'error',
-                      message:'登陆失败'
-                  })
-              }else{
-                  loginApi.login(this.loginForm.username,this.loginForm.password).then(response=>{
-                      const resp=response.data
-                      //console.log(resp)
-                      if(resp.meta.status!==200){
-                          this.$message({
-                              type:'error',
-                              message:"无效账号"
-                          })
-                      }else{
-                           this.$message({
-                              type:'success',
-                              message:"登陆成功"
-                          })
-                          //保存token
-                          window.sessionStorage.setItem('token',resp.data.token)
-                          //跳转到主界面
-                          this.$router.push('/home')
-                          //console.log(resp)
-                      }
-                  })
-              }
-          })
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 6, max: 15, message: '密码长度在6到15个字符', trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    // 重置账号密码
+    resetLoginForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    // 账号登陆
+    login (forName) {
+      // 表单验证
+      this.$refs[forName].validate((valid) => {
+        if (!valid) {
+          this.$message
+          this.$message({
+            type: 'error',
+            message: '登陆失败'
+          })
+        } else {
+          loginApi.login(this.loginForm.username, this.loginForm.password).then(response => {
+            const resp = response.data
+            // console.log(resp)
+            if (resp.meta.status !== 200) {
+              this.$message({
+                type: 'error',
+                message: '无效账号'
+              })
+            } else {
+              this.$message({
+                type: 'success',
+                message: '登陆成功'
+              })
+              // 保存token
+              const token = resp.data.token
+              window.sessionStorage.setItem('token', token)
+              this.$store.commit('setToken', token)
+              // 跳转到主界面
+              this.$router.push('/home')
+              // console.log(resp)
+            }
+          })
+        }
+      })
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

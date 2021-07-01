@@ -28,6 +28,9 @@ export default {
     handleClose (tag) {
       console.log(tag.authName)
       this.$store.commit('delTag', tag)
+      const backpath = this.tags[this.tags.length - 1]
+      this.$router.push({ path: backpath.path })
+      // console.log('tags', backpath)
     },
     changeTags (tag) {
       console.log('1', tag)

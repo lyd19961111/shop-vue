@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import token from './modules/token.js'
 
 Vue.use(Vuex)
 
@@ -32,11 +33,15 @@ export default new Vuex.Store({
     delTag (state, tag) {
       const result = state.tags.findIndex(item => item.authName === tag.authName)
       state.tags.splice(result, 1)
+    },
+    clearMenu (state) {
+      state.tags = [{ path: 'webmain', authName: '首页' }]
     }
   },
   actions: {
 
   },
   modules: {
+    token
   }
 })

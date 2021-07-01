@@ -24,6 +24,7 @@ export default {
     logout () {
       window.sessionStorage.clear() // 清除token
       this.$router.push('./login') // 回到登陆界面
+      this.$store.commit('clearMenu')// 清空标签
     },
     changeCollapse () {
       this.isCollapse = !this.isCollapse
